@@ -14,4 +14,4 @@ if "codigo_sala" not in st.session_state:
 
 if modo == "Crear":
     if st.button("Generar Código de Invitación"):
-        codigo_sala = "".join(random
+        codigo_sala = "".join(random)
