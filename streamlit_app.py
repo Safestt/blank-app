@@ -1,5 +1,4 @@
 import streamlit as st
-import time
 
 # Inicializar estado de la página si no existe
 if "page" not in st.session_state:
@@ -14,9 +13,11 @@ if st.session_state.page == "home":
     with col1:
         if st.button("Iniciar Sesión"):
             st.session_state.page = "login"
+            st.rerun()
     with col2:
         if st.button("Registrarse"):
             st.session_state.page = "register"
+            st.rerun()
 
 # Página de Registro
 elif st.session_state.page == "register":
@@ -30,14 +31,13 @@ elif st.session_state.page == "register":
     if st.button("Registrarse"):
         if password != password_confirmation:
             st.error("Las contraseñas no coinciden!")
-        elif password == password_confirmation and password and password_confirmation and not username:
+        elif password == password_confirmation and password and not username:
              st.error("Por favor ingresa un nombre de usuario valido")
         elif password == password_confirmation and username:
             st.success("Registrado correctamente")
             st.session_state.page = "home"
-            time.sleep(2)
             st.rerun()
-            
             
     if st.button("Volver al inicio"):
         st.session_state.page = "home"
+        st.rerun()
