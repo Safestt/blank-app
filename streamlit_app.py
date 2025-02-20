@@ -1,4 +1,5 @@
 import streamlit as st
+import time
 
 # Inicializar estado de la página si no existe
 if "page" not in st.session_state:
@@ -34,6 +35,8 @@ elif st.session_state.page == "register":
         elif password == password_confirmation and username:
             st.success("Registrado correctamente")
             st.session_state.page = "home"
+            time.sleep(2)
+            st.rerun()
             
             
     if st.button("Volver al inicio"):
