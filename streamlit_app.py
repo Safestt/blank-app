@@ -17,6 +17,7 @@ if st.session_state.page == "home":
     with col2:
         if st.button("Registrarse"):
             st.session_state.page = "register"
+            time.sleep(3)
             st.rerun()
 
 # Página de Registro
