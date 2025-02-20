@@ -20,7 +20,6 @@ if st.session_state.page == "home":
 # Página de Registro
 elif st.session_state.page == "register":
     st.title("Registro")
-    st.write("Aquí iría el formulario de registro")
    
     username = st.text_input("Usuario", placeholder="Ingrese un usuario para registrarse")
     
