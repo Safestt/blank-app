@@ -5,7 +5,6 @@ if "page" not in st.session_state:
     st.session_state.page = "home"
 
 st.title("Demo 🚀")
-
 # Página de Inicio
 if st.session_state.page == "home":
     st.write("Bienvenido, selecciona una opción:")
