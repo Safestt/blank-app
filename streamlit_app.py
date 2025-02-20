@@ -28,12 +28,13 @@ elif st.session_state.page == "register":
     
     if st.button("Registrarse"):
         if password != password_confirmation:
-            st.error("Las contraseñas no coinciden")
-        elif password == password_confirmation and not username:
+            st.error("Las contraseñas no coinciden!")
+        elif password == password_confirmation and password and password_confrimation and not username:
              st.error("Por favor ingresa un nombre de usuario valido")
         elif password == password_confirmation and username:
             st.success("Registrado correctamente")
             st.session_state.page = "home"
+            
             
     if st.button("Volver al inicio"):
         st.session_state.page = "home"
