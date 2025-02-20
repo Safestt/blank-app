@@ -27,7 +27,13 @@ elif st.session_state.page == "register":
     password_confirmation = st.text_input("Contraseña confirmacion", type="password", placeholder="Ingrese su contraseña nuevamente")
     
     if st.button("Registrarse"):
-        #Logica para autenticacion
-        st.write("Coming soon")
+        if password != password_confirmation:
+            st.error("Las contraseñas no coinciden!")
+        elif password == password_confirmation and not username:
+             st.error("Por favor ingresa un nombre de usuario valido")
+        elif password == password_confirmation and username:
+            st.success("Registrado correctamente")
+            st.session_state.page = "home"
+            
     if st.button("Volver al inicio"):
         st.session_state.page = "home"
