@@ -1,4 +1,5 @@
 import streamlit as st
+import requests
 Url_api = "https://api-test-0cxg.onrender.com/"
 
 # Inicializar estado de la página si no existe
