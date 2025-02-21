@@ -68,12 +68,18 @@ elif st.session_state.page == "login":
             response = requests.post(Url_api + "auth/login", json=data)
             
             if response.status_code == 200:
-                st.success("¡Inicio de sesión exitoso!")
-                time.sleep(3)
-                st.session_state.page = "logged_in"
-                st.rerun()
+                respuesta_json = response.json()  # Convertir la respuesta a un diccionario
+                verificacion = respuesta_json.get("Verificacion", False)  # Obtener el valor de 'Verificacion'
+                
+                if verificacion:  # Si es True, iniciar sesión
+                    st.success("¡Inicio de sesión exitoso!")
+                    time.sleep(3)
+                    st.session_state.page = "logged_in"
+                    st.rerun()
+                else:
+                    st.error("Credenciales incorrectas")
             else:
-                st.error("Credenciales incorrectas")
+                st.error("Error en la conexión con la API")
     
     if st.button("Volver al inicio"):
         st.session_state.page = "home"
