@@ -44,7 +44,6 @@ elif st.session_state.page == "register":
             if response.status_code == 200:
                 st.success("¡Usuario registrado correctamente!")
                 time.sleep(3)
-                print(response.json())  # Ver la respuesta de la API
                 st.session_state.page = "home"
                 st.rerun()  # Volver a la página principal después de un registro exitoso
             else:
