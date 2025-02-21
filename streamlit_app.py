@@ -69,9 +69,7 @@ elif st.session_state.page == "login":
             
             if response.status_code == 200:
                 st.success("¡Inicio de sesión exitoso!")
-                st.session_state.page = "home"
-                st.write("Tus credenciales han sido confirmadas")
-                st.rerun()  # Volver a la página principal después de un inicio de sesión exitoso
+                st.rerun()  
             else:
                 st.error("Credenciales incorrectas")
                 st.error(f"Error al iniciar sesión: {response.json().get('detail', 'Error desconocido')}")
