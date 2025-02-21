@@ -1,19 +1,11 @@
-# 🎈 Blank app template
+#Login streamlit
+Este es un proyecto de Streamlit en el frontend y FastAPI en el backend. El frontend interactúa con el backend mediante solicitudes HTTP para realizar diversas operaciones de datos, utilizando Firebase Firestore como base de datos.
 
-A simple Streamlit app template for you to modify!
-
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://blank-app-template.streamlit.app/)
-
-### How to run it on your own machine
-
-1. Install the requirements
-
-   ```
-   $ pip install -r requirements.txt
-   ```
-
-2. Run the app
-
-   ```
-   $ streamlit run streamlit_app.py
-   ```
+🚀 Características
+Frontend: Aplicación construida con Streamlit que proporciona una interfaz fácil de usar para la interacción.
+Backend: API RESTful construida con FastAPI, que maneja la lógica de negocio y las operaciones de base de datos.
+Base de Datos: Firebase Firestore se utiliza para almacenar los datos de los usuarios y otras operaciones.
+💻 Tecnologías
+Frontend: Streamlit
+Backend: FastAPI
+Base de Datos: Firebase Firestore
