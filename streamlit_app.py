@@ -64,7 +64,7 @@ elif st.session_state.page == "login":
             # Preparar los datos para la solicitud POST
             data = {"username": username, "password": password}
             
-            # Enviar el POST a la API
+         
             response = requests.post(Url_api + "auth/login", json=data)
             
             if response.status_code == 200:
@@ -83,13 +83,10 @@ elif st.session_state.page == "home":
     col1, col2 = st.columns(2)
     with col1:
         if st.button("Salir"):
-   
             st.write("Saliendo...")
             progress_bar = st.progress(0)
-
             for i in range(100):
                 time.sleep(0.05)  
                 progress_bar.progress(i + 1)  
-            
             st.session_state.page = "home"
             st.rerun()  
