@@ -80,6 +80,10 @@ elif st.session_state.page == "login":
         st.rerun()
 
 elif st.session_state.page == "logged_in":
+    image_url = "https://img.freepik.com/fotos-premium/candado-morado-contrasena-e-icono-aprobado-proteccion-datos-icono-acceso-privado-contrasena-acceso-seguridad-proteccion-privacidad-informacion-personal-concepto-seguridad-ilustracion-renderizado-3d_473922-903.jpg?w=740"
+    
+    st.image(image_url, caption="Logged in", use_column_width=True)
+    st.write("Actualmente no hay funcionalidades")
     col1, col2 = st.columns(2)
     with col1:
         if st.button("Salir"):
