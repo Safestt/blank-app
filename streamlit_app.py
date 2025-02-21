@@ -57,7 +57,24 @@ elif st.session_state.page == "login":
     st.title("login")
     username = st.text_input("Usuario", placeholder="Ingrese un usuario para registrarse")
     password = st.text_input("Contraseña", type="password", placeholder="Ingrese su contraseña")
-    
+    if st.button("Iniciar sesión"):
+        if not username or not password:
+            st.error("Por favor ingresa tu usuario y contraseña.")
+        else:
+            # Preparar los datos para la solicitud POST
+            data = {"username": username, "password": password}
+            
+            # Enviar el POST a la API
+            response = requests.post(Url_api + "auth/login", json=data)
+            
+            if response.status_code == 200:
+                st.success("¡Inicio de sesión exitoso!")
+                print(response.json())  # Ver la respuesta de la API
+                # Aquí puedes agregar un redireccionamiento o lo que se desea hacer tras login
+                st.session_state.page = "home"
+                st.rerun()  # Volver a la página principal después de un inicio de sesión exitoso
+            else:
+                st.error(f"Error al iniciar sesión: {response.json().get('detail', 'Error desconocido')}")
     if st.button("Volver al inicio"):
         st.session_state.page = "home"
         st.rerun()
