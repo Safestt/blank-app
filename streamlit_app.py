@@ -27,7 +27,6 @@ elif st.session_state.page == "register":
     st.title("Registro")
    
     username = st.text_input("Usuario", placeholder="Ingrese un usuario para registrarse")
-    
     password = st.text_input("Contraseña", type="password", placeholder="Ingrese su contraseña")
     password_confirmation = st.text_input("Contraseña confirmacion", type="password", placeholder="Ingrese su contraseña nuevamente")
     
@@ -37,16 +36,18 @@ elif st.session_state.page == "register":
         elif password == password_confirmation and password and not username:
              st.error("Por favor ingresa un nombre de usuario valido")
         elif password == password_confirmation and username:
-                data = {"username": username,"password": password}
-                response = requests.post(Url_api + "auth/register", json=data)
-                if response.status_code == 200:
-                    print("¡Usuario registrado correctamente!")
-                    print(response.json())  # Ver la respuesta de la API
-                else:
-                    print(f"Error al registrar usuario: {response.json().get('detail', 'Error desconocido')}")
-            st.success("Registrado correctamente")
-            st.session_state.page = "home"
-            st.rerun()
+            data = {"username": username, "password": password}
+            
+            # Enviar el POST a la API
+            response = requests.post(Url_api + "auth/register", json=data)
+            
+            if response.status_code == 200:
+                st.success("¡Usuario registrado correctamente!")
+                print(response.json())  # Ver la respuesta de la API
+                st.session_state.page = "home"
+                st.rerun()  # Volver a la página principal después de un registro exitoso
+            else:
+                st.error(f"Error al registrar usuario: {response.json().get('detail', 'Error desconocido')}")
             
     if st.button("Volver al inicio"):
         st.session_state.page = "home"
