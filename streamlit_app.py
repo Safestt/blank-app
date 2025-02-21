@@ -79,7 +79,7 @@ elif st.session_state.page == "login":
         st.session_state.page = "home"
         st.rerun()
 
-elif st.session_state.page == "home":
+elif st.session_state.page == "logged_in":
     col1, col2 = st.columns(2)
     with col1:
         if st.button("Salir"):
