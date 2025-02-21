@@ -53,3 +53,12 @@ elif st.session_state.page == "register":
     if st.button("Volver al inicio"):
         st.session_state.page = "home"
         st.rerun()
+
+elif st.session_state.page == "login":
+    st.title("login")
+    username = st.text_input("Usuario", placeholder="Ingrese un usuario para registrarse")
+    password = st.text_input("Contraseña", type="password", placeholder="Ingrese su contraseña")
+    
+    if st.button("Volver al inicio"):
+        st.session_state.page = "home"
+        st.rerun()
