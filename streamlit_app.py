@@ -45,7 +45,7 @@ elif st.session_state.page == "register":
                 st.success("¡Usuario registrado correctamente!")
                 time.sleep(3)
                 st.session_state.page = "home"
-                st.rerun()  # Volver a la página principal después de un registro exitoso
+                st.rerun()  
             else:
                 st.error(f"Error al registrar usuario: {response.json().get('detail', 'Error desconocido')}")
             
@@ -69,9 +69,27 @@ elif st.session_state.page == "login":
             
             if response.status_code == 200:
                 st.success("¡Inicio de sesión exitoso!")
+                time.sleep(3)
+                st.session_state.page = "logged_in"
+                st.rerun()
             else:
                 st.error("Credenciales incorrectas")
     
     if st.button("Volver al inicio"):
         st.session_state.page = "home"
         st.rerun()
+
+elif st.session_state.page == "home":
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("Salir"):
+   
+            st.write("Saliendo...")
+            progress_bar = st.progress(0)
+
+            for i in range(100):
+                time.sleep(0.05)  
+                progress_bar.progress(i + 1)  
+            
+            st.session_state.page = "home"
+            st.rerun()  
