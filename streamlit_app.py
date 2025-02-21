@@ -71,7 +71,6 @@ elif st.session_state.page == "login":
                 st.success("¡Inicio de sesión exitoso!")
             else:
                 st.error("Credenciales incorrectas")
-                st.error(f"Error al iniciar sesión: {response.json().get('detail', 'Error desconocido')}")
     
     if st.button("Volver al inicio"):
         st.session_state.page = "home"
