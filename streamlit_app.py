@@ -96,7 +96,7 @@ elif st.session_state.page == "logged_in":
             st.write("Saliendo...")
             progress_bar = st.progress(0)
             for i in range(100):
-                time.sleep(0.5)  
+                time.sleep(0.01)  
                 progress_bar.progress(i + 1)  
             st.session_state.page = "home"
             st.rerun()  
