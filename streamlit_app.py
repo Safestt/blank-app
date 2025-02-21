@@ -69,7 +69,6 @@ elif st.session_state.page == "login":
             
             if response.status_code == 200:
                 st.success("¡Inicio de sesión exitoso!")
-                st.rerun()  
             else:
                 st.error("Credenciales incorrectas")
                 st.error(f"Error al iniciar sesión: {response.json().get('detail', 'Error desconocido')}")
