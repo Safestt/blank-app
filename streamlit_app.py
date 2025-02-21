@@ -68,7 +68,7 @@ elif st.session_state.page == "login":
             response = requests.post(Url_api + "auth/login", json=data)
             
             if response.status_code == 200:
-                respuesta_json = response.json()  # Convertir la respuesta a un diccionario
+                respuesta_json = response.json()  
                 verificacion = respuesta_json.get("Verificacion", False)  # Obtener el valor de 'Verificacion'
                 
                 if verificacion:  # Si es True, iniciar sesión
@@ -96,7 +96,7 @@ elif st.session_state.page == "logged_in":
             st.write("Saliendo...")
             progress_bar = st.progress(0)
             for i in range(100):
-                time.sleep(0.05)  
+                time.sleep(0.5)  
                 progress_bar.progress(i + 1)  
             st.session_state.page = "home"
             st.rerun()  
