@@ -3,40 +3,49 @@ import asyncio
 import json
 
 app = FastAPI()
-active_connections = {}  # 🔹 Usaremos WebSocket como clave
+active_connections = {}
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
+    ip_client = websocket.client.host
     
-    user_data = {
+    active_connections[ip_client] = {
+        "websocket": websocket,  # ✅ Guarda el objeto WebSocket correctamente
         "user_info": None
     }
-
-    active_connections[websocket] = user_data  # 🔹 Guardar WebSocket como clave
 
     try:
         while True:
             try:
+                
                 data = await asyncio.wait_for(websocket.receive_text(), timeout=30)
-                print(f"📩 Mensaje recibido: {data}")
 
                 if data == "actualizar":
-                    print("✅ Mensaje 'actualizar' recibido, actualizando datos...")
-                    active_connections[websocket]["user_info"] = "12345"
+                    active_connections[ip_client]["user_info"] = "12345"
 
-                    json_data = json.dumps({
-                        str(ws): {"user_info": info["user_info"]}
-                        for ws, info in active_connections.items()
-                    }, default=str)  # 🔹 Convertimos WebSocket en string
+                   
+                    users_info = {
+                        ip: {"user_info": user["user_info"]} for ip, user in active_connections.items()}
+                    await websocket.send_text(json.dumps(users_info))
 
-                    print(f"📤 Enviando JSON: {json_data}")
-                    await websocket.send_text(json_data)
-
+                elif data == "online":
+                    total_users = len(active_connections)
+                    await websocket.send_text(f"Usuarios conectados: {total_users}")  
+                
                 await websocket.send_text(f"Recibido: {data}")
+
             except asyncio.TimeoutError:
-                await websocket.send_text("ping")  # 🔹 Mantener conexión activa
+                server_data = {
+                "Total_user": f"usuarios totales: {len(active_connections)}",
+                "Mensaje": "Ping del servidor",
+                }
+
+                await websocket.send_text(json.dumps(server_data)) 
+
     except WebSocketDisconnect:
-        print("❌ Cliente desconectado")
+        print(f"Cliente {ip_client} desconectado")
+    
     finally:
-        active_connections.pop(websocket, None)  # 🔹 Eliminar correctamente
+        # ✅ Elimina la conexión del diccionario correctamente
+        active_connections.pop(ip_client, None)
