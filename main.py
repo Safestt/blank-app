@@ -37,7 +37,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
             except asyncio.TimeoutError:
                 server_data = {
-                "Total_user": len(active_connections)",
+                "Total_user": len(active_connections),
                 "Mensaje": "Ping del servidor",
                 }
 
