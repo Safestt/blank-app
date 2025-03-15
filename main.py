@@ -1,7 +1,17 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi.middleware.cors import CORSMiddleware
 import asyncio
 
 app = FastAPI()
+
+# Configuración de CORS para permitir conexiones WebSocket desde cualquier origen
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Permite todas las conexiones (ajusta según sea necesario)
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 active_connections = set()
 
 @app.websocket("/ws")
