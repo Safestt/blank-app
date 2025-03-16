@@ -1,7 +1,7 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 import asyncio
 import json
-import uuid
+from jwt_auth import verify_jwt
 
 app = FastAPI()
 active_connections = {}
@@ -10,60 +10,79 @@ active_connections = {}
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
 
-    user_id = str(uuid.uuid4())
+    query_params = websocket.query_params
+    client_jwt = query_params.get("client_jwt", None)
+
+    if not client_jwt:
+        await websocket.send_text(json.dumps({"error": "JWT no proporcionado"}))
+        await websocket.close()
+        return
+
+    try:
+        user_data = verify_jwt(client_jwt)
+        user_id = user_data["user"]
+    except Exception:
+        await websocket.send_text(json.dumps({"error": "JWT inválido"}))
+        await websocket.close()
+        return
+    
 
     active_connections[user_id] = {
         "websocket": websocket,
         "user_info": None
     }
 
-    # 📢 Notificar a todos cuando un usuario se conecta
-    connection_update = {"Total_user": len(active_connections)}
-    for conn in list(active_connections.values()):
-        try:
-            await conn["websocket"].send_text(json.dumps(connection_update))
-        except:
-            pass     
+    print(active_connections)
+
+    await broadcast_all_user()
 
     try:
         while True:
             try:
                 data = await asyncio.wait_for(websocket.receive_text(), timeout=30)
+                
+                json_data = json.loads(data)
 
-                if data == "actualizar":
-                    active_connections[user_id]["user_info"] = "12345"
-                    users_info = {
-                        uid: {"user_info": user["user_info"]} for uid, user in active_connections.items()
-                    }
-                    await websocket.send_text(json.dumps(users_info))
+                message = json_data.get("message")
+                action = json_data.get("action")
+                destinatary = json_data.get("destinatary")
 
-                elif data == "online":
-                    total_users = len(active_connections)
-                    await websocket.send_text(f"Usuarios conectados: {total_users}")  
+
+                if action == "send" and message:
+                    await send_transaction_notification(destinatary,message)
+
+
                 
                 await websocket.send_text(f"Recibido: {data}")
-
+            
             except asyncio.TimeoutError:
-                server_data = {"Mensaje": "Ping del servidor"}
-                await websocket.send_text(json.dumps(server_data)) 
-
+                await websocket.send_text(json.dumps({"Mensaje": "Ping del servidor"}))
+    
     except WebSocketDisconnect:
         print(f"Cliente {user_id} desconectado")
-
     finally:
-        # ✅ Cierra explícitamente el WebSocket
-        try:
-            await websocket.close()
-        except:
-            pass  # Por si ya está cerrado
-
-        # ✅ Elimina la conexión correctamente
         active_connections.pop(user_id, None)
+        await broadcast_all_user()
 
-        # 📢 Ahora sí, enviar actualización a los demás usuarios
-        disconnection_update = {"Total_user": len(active_connections)}
-        for conn in list(active_connections.values()):
-            try:
-                await conn["websocket"].send_text(json.dumps(disconnection_update))
-            except:
-                pass  
+
+async def broadcast_all_user():
+    connection_update = {"Total_user": len(active_connections)}
+    for conn in list(active_connections.values()):
+        try:
+            await conn["websocket"].send_text(json.dumps(connection_update))
+        except:
+            pass  
+
+async def send_transaction_notification(other_id, message):
+    if other_id in active_connections:
+        websocket = active_connections[other_id]["websocket"]
+        data = {
+            "signal": {
+                "action": "transaction",
+                "message": f"{message}",
+                "date": "2025-03-15T12:34:56Z"
+            }
+        }
+
+
+        await websocket.send_text(json.dumps(data))
