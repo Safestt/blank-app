@@ -56,7 +56,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 await websocket.send_text(f"Recibido: {data}")
             
             except asyncio.TimeoutError:
-                await websocket.send_text(json.dumps({"Mensaje": "Ping del servidor"}))
+                await websocket.send_text(json.dumps({"Mensaje": "Ping"}))
     
     except WebSocketDisconnect:
         print(f"Cliente {user_id} desconectado")
